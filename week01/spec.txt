@@ -1,0 +1,19 @@
+# books spec 
+
+#purpose: a web service that returns data about books to clients
+
+#data model: each book has an id, an author, a title, and publication date which are all strings 
+
+#endpoints: 
+
+1. GET books - returns all books in database as a list - success: a status 200
+
+2. GET books by id - returns just one book that is searched by id - success: a status 200 - no matching book = status 404
+
+all books will be stored in the database under a collection named books and the responses will be in JSON
+
+
+
+The problem with a spec like this is it doesn't have any plan for what a client might see if there are no books matching their search
+also if you have a database with tons and tons of books having a request that gets all of them could have a long delay or put a large 
+load on the database. It's also important to keep in mind which users will have access to thi info and verify that first
