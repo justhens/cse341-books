@@ -7,5 +7,11 @@ const getAllBooks = async () => {
 
   return books;
 };
+const getBookById = async (bookId) => {
+  const database = getDb();
+  const booksCollection = database.collection('books');
+  const book = await booksCollection.findOne({ id: bookId });
 
-export { getAllBooks };
+  return book;
+};
+export { getAllBooks, getBookById };
