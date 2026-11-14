@@ -22,7 +22,7 @@ const options = {
           properties: {
             _id: { type: 'string', example: '6adffe71bdd6ef6e571ef4ad' },
             id: { type: 'string', example: 'b1' },
-            author: { type: 'string', example: 'Maya Rivera' },
+            authorId: { type: 'string', example: 'a1' },
             title: { type: 'string', example: 'Patterns of Light' },
             publicationDate: { type: 'string', format: 'date', example: '2021-08-17' }
           }

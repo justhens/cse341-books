@@ -38,9 +38,8 @@ const getAuthorById = async (req, res) => {
 };
 
 const createAuthor = async (req, res) => {
-  const { id, name, birthYear } = req.body;
-
   try {
+    const { id, name, birthYear } = req.body ?? {};
     if (!id || !name || birthYear === undefined) {
       return res.status(400).json({ message: 'Missing required author fields.' });
     }
@@ -63,9 +62,9 @@ const createAuthor = async (req, res) => {
 
 const updateAuthor = async (req, res) => {
   const requestedId = req.params.id;
-  const { name, birthYear } = req.body;
 
   try {
+    const { name, birthYear } = req.body ?? {};
     if (!name || birthYear === undefined) {
       return res.status(400).json({ message: 'Missing required author fields.' });
     }
