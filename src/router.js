@@ -1,12 +1,6 @@
 import express from 'express';
-import { getBooksHandler,getBookByIdHandler } from './controllers/books.js';
-import {
-  getAllAuthors,
-  getAuthorById,
-  createAuthor,
-  updateAuthor,
-  deleteAuthor
-} from './controllers/authors.js';
+import { getBooksHandler, getBookByIdHandler, createBookHandler, updateBookHandler, deleteBookHandler } from './controllers/books.js';
+import { getAllAuthors, createAuthor, updateAuthor, deleteAuthor, getAuthorById } from './controllers/authors.js';
 const router = express.Router();
 /**
  * @openapi
@@ -74,6 +68,173 @@ router.get('/books', getBooksHandler);
  *               message: Internal server error
  */
 router.get('/books/:id', getBookByIdHandler);
+/**
+ * @openapi
+ * /books:
+ *   post:
+ *     tags:
+ *       - Books
+ *     summary: Create a book
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               id:
+ *                 type: string
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             id: b4
+ *             authorId: a1
+ *             title: Example Book
+ *             publicationDate: '2024-01-15'
+ *     responses:
+ *       201:
+ *         description: The created book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       400:
+ *         description: Missing required fields, duplicate book id, or the author does not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Missing required book fields
+ *       500:
+ *         description: Unexpected server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Internal server error
+ */
+router.post('/books', createBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   put:
+ *     tags:
+ *       - Books
+ *     summary: Update a book by its id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: b1
+ *         description: The custom id of the book
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             authorId: a1
+ *             title: Updated Title
+ *             publicationDate: '2024-02-20'
+ *     responses:
+ *       200:
+ *         description: The updated book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       400:
+ *         description: Missing required fields or the author does not exist
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Author does not exist
+ *       404:
+ *         description: No book has that id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Book not found
+ *       500:
+ *         description: Unexpected server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Internal server error
+ */
+router.put('/books/:id', updateBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   delete:
+ *     tags:
+ *       - Books
+ *     summary: Delete a book by its id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         example: b4
+ *         description: The custom id of the book
+ *     responses:
+ *       204:
+ *         description: Book deleted
+ *       404:
+ *         description: No book has that id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Book not found
+ *       500:
+ *         description: Unexpected server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               message: Internal server error
+ */
+router.delete('/books/:id', deleteBookHandler);
+
 /**
  * @openapi
  * /authors:
